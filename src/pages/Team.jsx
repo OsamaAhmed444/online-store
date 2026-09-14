@@ -25,15 +25,15 @@ const team = [
 
     {
         id: 2,
-        name: "Member Name",
+        name: "Gana Ragab",
         role: "Developer",
         website: "",
-        instagram: "",
-        facebook: "",
-        linkedin: "",
-        github: "",
-        whatsapp: "",
-        img: "",
+        instagram: "https://www.instagram.com/gana.ragab.16?stkn=dmJyajgycWZmdGow",
+        facebook: "https://www.facebook.com/gogo.ragab.940?rdid=dsP6kOdD7zagqJiM&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Dck8N7Z4h%2F#",
+        linkedin: "https://www.linkedin.com/in/gana-ragab-860b40412/",
+        github: "https://github.com/ganaragab2169-del",
+        whatsapp: "https://wa.me/201550040851",
+        img: "/team/ganaragab.jpeg",
     },
 
     {
