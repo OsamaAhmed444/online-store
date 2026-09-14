@@ -79,7 +79,7 @@ const team = [
         website: "https://mohaamedmahany.github.io/My-Portfolio/",
         instagram: "https://www.instagram.com/mohany111?stkn=MWQzYXZwaTQ1MG1jbA==",
         facebook: "https://www.facebook.com/share/1PyufuqiuJ/",
-        l inkedin: "linkedin.com/in/mohamed-mahany-47b415342",
+        linkedin: "linkedin.com/in/mohamed-mahany-47b415342",
         github: "https://github.com/Mohaamedmahany",
         whatsapp: "https://wa.me/201125218188",
         img: "/team/mohamedmohany.jpeg",
