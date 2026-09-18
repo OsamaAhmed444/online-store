@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -9,6 +9,8 @@ import {
   getMyWishlist,
 } from "../api/wishlistApi";
 
+import { cartContext1 } from "../context/CartContext";
+
 import ProductGallery from "../components/product/ProductGallery";
 import ReviewList from "../components/product/ReviewList";
 import ReviewForm from "../components/product/ReviewForm";
@@ -17,11 +19,15 @@ const ProductDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const { addItemToCart } = useContext(cartContext1);
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const [quantity, setQuantity] = useState(1);
+  const [cartLoading, setCartLoading] = useState(false);
+
   const [isWishlist, setIsWishlist] = useState(false);
   const [wishlistLoading, setWishlistLoading] = useState(false);
 
@@ -36,14 +42,16 @@ const ProductDetailPage = () => {
 
         setProduct(response.data);
       } catch (err) {
-        console.error(err);
+        console.error("Product loading failed:", err);
         setError("Failed to load product.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProduct();
+    if (id) {
+      fetchProduct();
+    }
   }, [id]);
 
   // Check wishlist
@@ -55,10 +63,12 @@ const ProductDetailPage = () => {
         const wishlist = response.data;
 
         if (Array.isArray(wishlist)) {
+          const productId = Number(id);
+
           const exists = wishlist.some(
             (item) =>
-              item.productId === Number(id) ||
-              item.product?.id === Number(id)
+              Number(item.productId) === productId ||
+              Number(item.product?.id) === productId
           );
 
           setIsWishlist(exists);
@@ -73,39 +83,44 @@ const ProductDetailPage = () => {
     }
   }, [id]);
 
+  // Add to cart
+  const handleAddToCart = async () => {
+    try {
+      setCartLoading(true);
+
+      await addItemToCart(Number(product.id), quantity);
+
+      toast.success("Product added to cart successfully!");
+    } catch (err) {
+      console.error("Add to cart failed:", err);
+      toast.error("Failed to add product to cart.");
+    } finally {
+      setCartLoading(false);
+    }
+  };
+
   // Add / Remove wishlist
   const handleWishlist = async () => {
     try {
       setWishlistLoading(true);
 
       if (isWishlist) {
-        await removeFromWishlist(id);
+        await removeFromWishlist(product.id);
 
         setIsWishlist(false);
-        toast.success("Product removed from wishlist");
+        toast.success("Product removed from wishlist.");
       } else {
-        await addToWishlist(id);
+        await addToWishlist(product.id);
 
         setIsWishlist(true);
-        toast.success("Product added to wishlist");
+        toast.success("Product added to wishlist.");
       }
     } catch (err) {
-      console.error(err);
+      console.error("Wishlist action failed:", err);
       toast.error("Something went wrong. Please try again.");
     } finally {
       setWishlistLoading(false);
     }
-  };
-
-  // Add to cart
-  const handleAddToCart = () => {
-    /*
-      TODO:
-      Connect this button with useCart when the cart hook
-      is ready / available in the project.
-    */
-
-    toast.info("Add to cart will be connected soon.");
   };
 
   if (loading) {
@@ -113,6 +128,7 @@ const ProductDetailPage = () => {
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="h-10 w-10 animate-spin rounded-full border-4 border-border border-t-foreground" />
+
           <p className="text-sm text-muted-foreground">
             Loading product...
           </p>
@@ -201,11 +217,12 @@ const ProductDetailPage = () => {
                 ))}
               </div>
 
-              {product.rating && (
-                <span className="text-sm text-muted-foreground">
-                  {Number(product.rating).toFixed(1)}
-                </span>
-              )}
+              {product.rating !== undefined &&
+                product.rating !== null && (
+                  <span className="text-sm text-muted-foreground">
+                    {Number(product.rating).toFixed(1)}
+                  </span>
+                )}
             </div>
 
             {/* Price */}
@@ -241,6 +258,7 @@ const ProductDetailPage = () => {
                     setQuantity((current) => Math.max(1, current - 1))
                   }
                   className="flex h-10 w-10 items-center justify-center text-lg transition hover:bg-muted"
+                  aria-label="Decrease quantity"
                 >
                   -
                 </button>
@@ -255,6 +273,7 @@ const ProductDetailPage = () => {
                     setQuantity((current) => current + 1)
                   }
                   className="flex h-10 w-10 items-center justify-center text-lg transition hover:bg-muted"
+                  aria-label="Increase quantity"
                 >
                   +
                 </button>
@@ -266,10 +285,18 @@ const ProductDetailPage = () => {
               <button
                 type="button"
                 onClick={handleAddToCart}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition hover:opacity-90"
+                disabled={cartLoading}
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <i className="fa-solid fa-cart-shopping" />
-                Add to Cart
+                <i
+                  className={`fa-solid ${
+                    cartLoading
+                      ? "fa-spinner fa-spin"
+                      : "fa-cart-shopping"
+                  }`}
+                />
+
+                {cartLoading ? "Adding..." : "Add to Cart"}
               </button>
 
               <button
@@ -280,11 +307,15 @@ const ProductDetailPage = () => {
               >
                 <i
                   className={`fa-heart ${
-                    isWishlist ? "fa-solid text-red-500" : "fa-regular"
+                    isWishlist
+                      ? "fa-solid text-red-500"
+                      : "fa-regular"
                   }`}
                 />
 
-                {isWishlist
+                {wishlistLoading
+                  ? "Loading..."
+                  : isWishlist
                   ? "Remove from Wishlist"
                   : "Add to Wishlist"}
               </button>
