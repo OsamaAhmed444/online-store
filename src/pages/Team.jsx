@@ -105,44 +105,44 @@ const team = [
         facebook:"https://www.facebook.com/manal.fathy.756",
         linkedin:"https://www.linkedin.com/in/manal-fathi-a47676326/",
         github:"https://github.com/manalfathy620",
-        whatsapp:"+201021219445",
+        whatsapp:"https://wa.me/201021219445",
         img: "",
     },
     {
         id: 9,
-        name: "Member Name",
+        name: "Hla Elmassri",
         role: "Developer",
         website: "",
-        instagram: "",
-        facebook: "",
-        linkedin: "",
-        github: "",
-        whatsapp: "",
+        instagram: "https://www.instagram.com/eng.hlaelmassri/",
+        facebook: "https://www.facebook.com/hla.elmassri/",
+        linkedin: "https://www.linkedin.com/in/hla-elmassri-065940386/",
+        github: "https://github.com/Hla-Elmassri",
+        whatsapp: "https://wa.me/201098362708",
         img: "",
     },
     {
         id: 10,
-        name: "Member Name",
+        name: "Mohammed samir Ebrahim",
         role: "Developer",
         website: "",
-        instagram: "",
-        facebook: "",
-        linkedin: "",
-        github: "",
-        whatsapp: "",
-        img: "",
+        instagram: "https://www.instagram.com/muhamed_sameerr?stkn=MWpqaDBpbTgwdmM4Mg%3D%3D",
+        facebook: "https://www.facebook.com/mohamed.samir.taher?rdid=4FEa7E535TzbqJst&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1d1JWXoTKy%2F#",
+        linkedin: "https://www.linkedin.com/in/mohamed-sameer-04b062275/",
+        github: "https://github.com/Mohame570",
+        whatsapp: "https://wa.me/201027052903",
+        img: "/team/mohammedsamir.jpeg",
     },
     {
         id: 11,
-        name: "Member Name",
+        name: "Tasneem Ayman",
         role: "Developer",
         website: "",
-        instagram: "",
-        facebook: "",
-        linkedin: "",
-        github: "",
-        whatsapp: "",
-        img: "",
+        instagram: "https://www.instagram.com/tasneem__ayman_/",
+        facebook: "https://www.facebook.com/tasneem.ayman.520?rdid=ki8VxV5v1pNDe8Yr&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F19WzuyVsDq%2F#",
+        linkedin: "https://www.linkedin.com/in/tasneem-ayman-7212882a3/",
+        github: "https://github.com/Tasneemayman249",
+        whatsapp: "https://wa.me/201063463899",
+        img: "/team/tasneemayman.jpg",
     },
     {
         id: 12,
@@ -185,16 +185,14 @@ export default function Team() {
                         key={member.id}
                         className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gray-300 hover:shadow-lg"
                     >
-                        {/* Top subtle decoration */}
-                        <div className="absolute left-0 top-0 h-1 w-full bg-gray-900 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
                         {/* Image */}
-                        <div className="mx-auto mb-4 h-24 w-24 overflow-hidden rounded-full border-4 border-gray-100 bg-gray-100 shadow-sm transition-all duration-300 group-hover:border-gray-200 group-hover:shadow-md">
+                        <div className="mx-auto mb-4 h-[120px] w-[120px] overflow-hidden rounded-full border-4 border-gray-100 bg-gray-100 shadow-sm transition-all duration-300 group-hover:border-gray-200 group-hover:shadow-md">
                             {member.img ? (
                                 <img
                                     src={member.img}
                                     alt={member.name}
-                                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    className="h-full w-full object-cover transition-transform object-top duration-500 group-hover:scale-110"
                                 />
                             ) : (
                                 <div className="flex h-full w-full items-center justify-center text-2xl font-bold text-gray-400">
