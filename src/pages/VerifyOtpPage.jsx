@@ -1,0 +1,54 @@
+import {  useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import useAuth from '../hooks/useAuth';
+///////////////
+export default function VerifyOtpPage (){
+    const navigate = useNavigate();
+    const {VerifyOtp} = useAuth();
+    const {register, handelSubmite ,formState: { errors, isSubmitting },} = useForm();
+    const onSubmit = async (data) => {
+   try {
+      await VerifyOtp(data.otp);
+      toast.success('Account verified successfully');
+      navigate('/login');
+        }catch (error) {
+      toast.error(error?.response?.data?.message || 'Invalid verification code');
+      }
+  };
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-[#121212] border border-[#27272a] rounded-2xl p-8 shadow-2xl">
+        
+        {/* h1*/}
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold text-[#f97316]">Verify OTP</h1>
+          <p className="text-xs text-zinc-400 mt-2"> Please enter the 6-digit code sent to your email.</p>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handelSubmite(onSubmit)} className="space-y-4">
+          <div>
+            <label className="block text-xs text-zinc-300 mb-2">OTP Code</label>
+            <input type="text" maxLength={6} placeholder="123456" className="w-full bg-[#1c1c1e] border border-[#27272a] rounded-xl px-4 py-3 text-center text-lg tracking-widest text-white focus:outline-none focus:border-[#f97316]"
+              {...register('otp', {
+                required: 'OTP code is required',
+                minLength: { value: 6, message: 'OTP must be 6 digits' },
+              })}
+            />
+            {errors.otp && (
+              <p className="text-red-500 text-xs mt-1">{errors.otp.message}</p>
+            )}
+          </div>
+
+          <button type="submit" disabled={isSubmitting}
+            className="w-full bg-[#f97316] hover:bg-[#ea580c] text-white font-bold py-3 rounded-xl transition cursor-pointer disabled:opacity-50">
+            {isSubmitting ? 'Loading....' : 'Verify Code'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+    }
+
+
