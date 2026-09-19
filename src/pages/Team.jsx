@@ -110,14 +110,14 @@ const team = [
     },
     {
         id: 9,
-        name: "Member Name",
+        name: "Esraa Ehab",
         role: "Developer",
         website: "",
         instagram: "",
         facebook: "",
-        linkedin: "",
-        github: "",
-        whatsapp: "",
+        linkedin: "https://www.linkedin.com/in/esraa-e-ba124a222?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+        github: "https://github.com/esraa-ehab103",
+        whatsapp: "+201148717813",
         img: "",
     },
     {
