@@ -6,7 +6,7 @@ import useAuth from '../hooks/useAuth';
 export default function LoginPage (){
     const navigate = useNavigate();
     const {login} = useAuth();
-    const {register, handelSubmit ,formState: { errors, isSubmitting },} = useForm();
+    const {register, handleSubmit ,formState: { errors, isSubmitting },} = useForm();
     const onSubmit = async (data) => {
    try {
       await login(data);
@@ -26,7 +26,7 @@ export default function LoginPage (){
         </div>
 
         {/* Form */}
-        <form onSubmit={handelSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/*email */}
           <div>
             <label className="block text-xs text-zinc-300 mb-1.5 font-medium">Email</label>
