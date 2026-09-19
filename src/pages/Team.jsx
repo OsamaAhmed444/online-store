@@ -118,7 +118,7 @@ const team = [
         linkedin: "https://www.linkedin.com/in/hla-elmassri-065940386/",
         github: "https://github.com/Hla-Elmassri",
         whatsapp: "https://wa.me/201098362708",
-        img: "",
+        img: "/team/hlaelmassri.jpeg",
     },
     {
         id: 10,
@@ -146,14 +146,14 @@ const team = [
     },
     {
         id: 12,
-        name: "Member Name",
+        name: "Esraa Ehab",
         role: "Developer",
         website: "",
         instagram: "",
         facebook: "",
-        linkedin: "",
-        github: "",
-        whatsapp: "",
+        linkedin: "https://www.linkedin.com/in/esraa-e-ba124a222/",
+        github: "https://github.com/esraa-ehab103",
+        whatsapp: "https://wa.me/201148717813",
         img: "",
     },
 
