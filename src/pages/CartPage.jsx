@@ -1,43 +1,86 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CartItem from "../components/cart/CartItem";
 import CartSummary from "../components/cart/CartSummary";
 import CouponInput from "../components/cart/CouponInput";
 import EmptyState from "../components/common/EmptyState";
 import Modal from "../components/common/Modal";
+import {
+  getCart,
+  updateCartItem,
+  removeCartItem,
+  applyCoupon,
+} from "../api/cartApi";
 
 function CartPage() {
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: "Sample Product",
-      price: 25,
-      quantity: 1,
-      image: "https://via.placeholder.com/100",
-    },
-  ]);
-
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [discount, setDiscount] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
+  const [error, setError] = useState("");
 
-  function handleIncrease(id) {
-    const newItems = items.map(function (item) {
-      if (item.id === id) {
-        return { ...item, quantity: item.quantity + 1 };
+  async function loadCart() {
+    try {
+      setLoading(true);
+      setError("");
+      const res = await getCart();
+      const data = res.data;
+
+      const cartItems = data.items || data.cartItems || data.data || [];
+      setItems(cartItems);
+
+      if (data.discount) {
+        setDiscount(data.discount);
       }
-      return item;
-    });
-    setItems(newItems);
+    } catch (err) {
+      setError("Failed to load cart");
+      setItems([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  function handleDecrease(id) {
-    const newItems = items.map(function (item) {
-      if (item.id === id && item.quantity > 1) {
-        return { ...item, quantity: item.quantity - 1 };
-      }
-      return item;
+  useEffect(function () {
+    loadCart();
+  }, []);
+
+  async function handleIncrease(id) {
+    const item = items.find(function (x) {
+      return x.id === id || x.productId === id;
     });
-    setItems(newItems);
+    if (!item) return;
+
+    const newQty = (item.quantity || 1) + 1;
+
+    try {
+      await updateCartItem({
+        productId: item.productId || item.id,
+        quantity: newQty,
+      });
+      loadCart();
+    } catch (err) {
+      alert("Could not update quantity");
+    }
+  }
+
+  async function handleDecrease(id) {
+    const item = items.find(function (x) {
+      return x.id === id || x.productId === id;
+    });
+    if (!item) return;
+
+    const currentQty = item.quantity || 1;
+    if (currentQty <= 1) return;
+
+    try {
+      await updateCartItem({
+        productId: item.productId || item.id,
+        quantity: currentQty - 1,
+      });
+      loadCart();
+    } catch (err) {
+      alert("Could not update quantity");
+    }
   }
 
   function handleRemoveClick(id) {
@@ -45,20 +88,26 @@ function CartPage() {
     setShowModal(true);
   }
 
-  function confirmRemove() {
-    const newItems = items.filter(function (item) {
-      return item.id !== itemToRemove;
-    });
-    setItems(newItems);
-    setShowModal(false);
-    setItemToRemove(null);
+  async function confirmRemove() {
+    try {
+      await removeCartItem(itemToRemove);
+      setShowModal(false);
+      setItemToRemove(null);
+      loadCart();
+    } catch (err) {
+      alert("Could not remove item");
+    }
   }
 
-  function handleApplyCoupon(code) {
-    if (code.toUpperCase() === "SAVE10") {
-      setDiscount(10);
-    } else {
-      setDiscount(0);
+  async function handleApplyCoupon(code) {
+    try {
+      const res = await applyCoupon({ code: code });
+      const data = res.data;
+      if (data.discount) {
+        setDiscount(data.discount);
+      }
+      loadCart();
+    } catch (err) {
       alert("Invalid coupon");
     }
   }
@@ -67,14 +116,53 @@ function CartPage() {
     alert("Go to checkout");
   }
 
+  function getItemId(item) {
+    return item.productId || item.id;
+  }
+
+  function getItemName(item) {
+    return item.name || item.productName || item.product?.name || "Product";
+  }
+
+  function getItemPrice(item) {
+    return item.price || item.product?.price || 0;
+  }
+
+  function getItemImage(item) {
+    return (
+      item.image ||
+      item.product?.image ||
+      item.product?.thumbnail ||
+      "https://via.placeholder.com/100"
+    );
+  }
+
   let subtotal = 0;
   for (let i = 0; i < items.length; i++) {
-    subtotal = subtotal + items[i].price * items[i].quantity;
+    const price = getItemPrice(items[i]);
+    const qty = items[i].quantity || 1;
+    subtotal = subtotal + price * qty;
   }
 
   const total = subtotal - discount;
-  if (total < 0) {
-    // keep total from going negative
+
+  if (loading) {
+    return (
+      <div className="max-w-5xl mx-auto p-4">
+        <p>Loading cart...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-5xl mx-auto p-4">
+        <p className="text-red-500">{error}</p>
+        <button type="button" onClick={loadCart} className="mt-2 underline">
+          Try again
+        </button>
+      </div>
+    );
   }
 
   if (items.length === 0) {
@@ -96,10 +184,18 @@ function CartPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
           {items.map(function (item) {
+            const mappedItem = {
+              id: getItemId(item),
+              name: getItemName(item),
+              price: getItemPrice(item),
+              quantity: item.quantity || 1,
+              image: getItemImage(item),
+            };
+
             return (
               <CartItem
-                key={item.id}
-                item={item}
+                key={mappedItem.id}
+                item={mappedItem}
                 onIncrease={handleIncrease}
                 onDecrease={handleDecrease}
                 onRemove={handleRemoveClick}
