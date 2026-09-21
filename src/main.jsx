@@ -9,22 +9,31 @@ import App from "./App.jsx";
 import "./index.css";
 import CartContext from "./context/CartContext.jsx";
 import AuthContext from "./context/AuthContext.jsx";
+import ThemeContext from "./context/ThemeContext.jsx";
+import useTheme from "./hooks/useTheme.js";
 
 const stripePromise = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
   ? loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
   : null;
 
+function ThemedToastContainer() {
+  const { theme } = useTheme();
+  return <ToastContainer position="top-right" theme={theme} />;
+}
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
-      <AuthContext>
-        <CartContext>
-          <Elements stripe={stripePromise}>
-            <App />
-            <ToastContainer position="top-right" theme="dark" />
-          </Elements>
-        </CartContext>
-      </AuthContext>
-    </BrowserRouter>
+    <ThemeContext>
+      <BrowserRouter>
+        <AuthContext>
+          <CartContext>
+            <Elements stripe={stripePromise}>
+              <App />
+              <ThemedToastContainer />
+            </Elements>
+          </CartContext>
+        </AuthContext>
+      </BrowserRouter>
+    </ThemeContext>
   </StrictMode>,
 );

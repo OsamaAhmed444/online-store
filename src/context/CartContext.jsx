@@ -26,7 +26,8 @@ export default function CartContext({ children }) {
   };
 
   useEffect(() => {
-    refreshCart();
+    // Guests get a 401 here (cart requires auth) — that's expected, not an error.
+    refreshCart().catch(() => {});
   }, []);
 
   const addItemToCart = async (productId, quantity) => {

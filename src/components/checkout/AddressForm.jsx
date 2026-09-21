@@ -20,9 +20,9 @@ const AddressForm = ({ onSubmit, initialValues = {} }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto p-4 bg-white rounded shadow">
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto p-4 bg-surface border border-border text-foreground rounded shadow">
       <h2 className="text-xl font-bold mb-4">Shipping Address</h2>
-      
+
       <div>
         <label className="block text-sm font-medium mb-1">Full Name</label>
         <input
@@ -31,7 +31,7 @@ const AddressForm = ({ onSubmit, initialValues = {} }) => {
           value={formData.fullName}
           onChange={handleChange}
           required
-          className="w-full border p-2 rounded"
+          className="w-full border border-border bg-muted p-2 rounded text-foreground outline-none focus:border-primary"
         />
       </div>
 
@@ -43,7 +43,7 @@ const AddressForm = ({ onSubmit, initialValues = {} }) => {
           value={formData.address}
           onChange={handleChange}
           required
-          className="w-full border p-2 rounded"
+          className="w-full border border-border bg-muted p-2 rounded text-foreground outline-none focus:border-primary"
         />
       </div>
 
@@ -56,7 +56,7 @@ const AddressForm = ({ onSubmit, initialValues = {} }) => {
             value={formData.city}
             onChange={handleChange}
             required
-            className="w-full border p-2 rounded"
+            className="w-full border border-border bg-muted p-2 rounded text-foreground outline-none focus:border-primary"
           />
         </div>
         <div>
@@ -67,7 +67,7 @@ const AddressForm = ({ onSubmit, initialValues = {} }) => {
             value={formData.postalCode}
             onChange={handleChange}
             required
-            className="w-full border p-2 rounded"
+            className="w-full border border-border bg-muted p-2 rounded text-foreground outline-none focus:border-primary"
           />
         </div>
       </div>
@@ -80,13 +80,13 @@ const AddressForm = ({ onSubmit, initialValues = {} }) => {
           value={formData.phone}
           onChange={handleChange}
           required
-          className="w-full border p-2 rounded"
+          className="w-full border border-border bg-muted p-2 rounded text-foreground outline-none focus:border-primary"
         />
       </div>
 
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition font-semibold"
+        className="w-full bg-primary text-primary-foreground py-2 rounded hover:bg-primary-hover transition font-semibold"
       >
         Proceed to Payment
       </button>

@@ -160,34 +160,57 @@ const team = [
 ];
 
 export default function Team() {
+    const memberCount = team.length;
+    const linkedCount = team.filter((member) => member.github).length;
+
     return (
-        <section className="w-full py-16">
-            {/* Header */}
-            <div className="mx-auto mb-12 max-w-2xl text-center">
-                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-gray-500">
-                    Our Team
-                </p>
+        <div className="min-h-screen w-full bg-background text-foreground">
+            {/* Hero */}
+            <section className="relative overflow-hidden border-b border-border bg-surface">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent" />
 
-                <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                    Meet Our Team
-                </h1>
+                <div className="relative mx-auto max-w-6xl px-4 py-16 text-center sm:py-20">
+                    <p className="mb-3 text-sm font-bold uppercase tracking-[0.3em] text-primary">
+                        Our Team
+                    </p>
 
-                <p className="mt-4 text-base leading-7 text-gray-500">
-                    A team of talented people working together to build,
-                    create, and deliver great results.
-                </p>
-            </div>
+                    <h1 className="text-4xl font-black tracking-tight sm:text-5xl">
+                        Meet the <span className="text-primary">Koda Store</span> Team
+                    </h1>
+
+                    <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+                        A team of talented people working together to build,
+                        create, and deliver great results.
+                    </p>
+
+                    <div className="mx-auto mt-10 grid max-w-md grid-cols-2 gap-4">
+                        <div className="rounded-2xl border border-border bg-background/60 px-5 py-4 backdrop-blur">
+                            <p className="text-3xl font-black text-primary">{memberCount}</p>
+                            <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                Team Members
+                            </p>
+                        </div>
+
+                        <div className="rounded-2xl border border-border bg-background/60 px-5 py-4 backdrop-blur">
+                            <p className="text-3xl font-black text-primary">{linkedCount}</p>
+                            <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                On GitHub
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             {/* Team Grid */}
-            <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 px-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 px-4 py-16 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {team.map((member) => (
                     <div
                         key={member.id}
-                        className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gray-300 hover:shadow-lg"
+                        className="group relative overflow-hidden rounded-2xl border border-border bg-surface p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg"
                     >
 
                         {/* Image */}
-                        <div className="mx-auto mb-4 h-[120px] w-[120px] overflow-hidden rounded-full border-4 border-gray-100 bg-gray-100 shadow-sm transition-all duration-300 group-hover:border-gray-200 group-hover:shadow-md">
+                        <div className="mx-auto mb-4 h-[120px] w-[120px] overflow-hidden rounded-full border-4 border-muted bg-muted shadow-sm transition-all duration-300 group-hover:border-primary/30 group-hover:shadow-md">
                             {member.img ? (
                                 <img
                                     src={member.img}
@@ -195,22 +218,22 @@ export default function Team() {
                                     className="h-full w-full object-cover transition-transform object-top duration-500 group-hover:scale-110"
                                 />
                             ) : (
-                                <div className="flex h-full w-full items-center justify-center text-2xl font-bold text-gray-400">
+                                <div className="flex h-full w-full items-center justify-center text-2xl font-bold text-muted-foreground">
                                     {member.name?.charAt(0) || "?"}
                                 </div>
                             )}
                         </div>
 
                         {/* Name */}
-                        <h2 className="text-lg font-bold text-gray-900">
+                        <h2 className="text-lg font-bold text-foreground">
                             {member.name}
                         </h2>
 
                         {/* Role */}
                         {member.role && (
-                            <p className="mt-1 text-sm text-gray-500">
+                            <span className="mt-2 inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
                                 {member.role}
-                            </p>
+                            </span>
                         )}
 
                         {/* Social Links */}
@@ -221,7 +244,7 @@ export default function Team() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={`${member.name} website`}
-                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-all duration-200 hover:bg-gray-900 hover:text-white"
+                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-muted-foreground transition-all duration-200 hover:bg-primary hover:text-primary-foreground"
                                 >
                                     <FontAwesomeIcon icon={faGlobe} />
                                 </a>
@@ -233,7 +256,7 @@ export default function Team() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={`${member.name} Instagram`}
-                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-all duration-200 hover:bg-pink-500 hover:text-white"
+                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-muted-foreground transition-all duration-200 hover:bg-pink-500 hover:text-white"
                                 >
                                     <FontAwesomeIcon icon={faInstagram} />
                                 </a>
@@ -245,7 +268,7 @@ export default function Team() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={`${member.name} Facebook`}
-                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-all duration-200 hover:bg-blue-600 hover:text-white"
+                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-muted-foreground transition-all duration-200 hover:bg-blue-600 hover:text-white"
                                 >
                                     <FontAwesomeIcon icon={faFacebook} />
                                 </a>
@@ -257,7 +280,7 @@ export default function Team() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={`${member.name} LinkedIn`}
-                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-all duration-200 hover:bg-blue-700 hover:text-white"
+                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-muted-foreground transition-all duration-200 hover:bg-blue-700 hover:text-white"
                                 >
                                     <FontAwesomeIcon icon={faLinkedin} />
                                 </a>
@@ -269,7 +292,7 @@ export default function Team() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={`${member.name} GitHub`}
-                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-all duration-200 hover:bg-black hover:text-white"
+                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-muted-foreground transition-all duration-200 hover:bg-foreground hover:text-background"
                                 >
                                     <FontAwesomeIcon icon={faGithub} />
                                 </a>
@@ -281,7 +304,7 @@ export default function Team() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={`${member.name} WhatsApp`}
-                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-all duration-200 hover:bg-green-500 hover:text-white"
+                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-muted-foreground transition-all duration-200 hover:bg-green-500 hover:text-white"
                                 >
                                     <FontAwesomeIcon icon={faWhatsapp} />
                                 </a>
@@ -290,6 +313,6 @@ export default function Team() {
                     </div>
                 ))}
             </div>
-        </section>
+        </div>
     );
 }

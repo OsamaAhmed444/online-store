@@ -7,7 +7,7 @@ export default function Loader({
   return (
     <LoaderCircle
       size={size}
-      className={`animate-spin text-orange-500 ${className}`}
+      className={`animate-spin text-primary ${className}`}
       aria-label="Loading"
     />
   );

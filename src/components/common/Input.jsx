@@ -2,18 +2,18 @@ export default function Input({label,error,className="", ...props})
 {
 return(
   <div className="w-full">
-    {label && <label className="mb-2 block text-sm font-medium text-white">{label}</label>}
-  
+    {label && <label className="mb-2 block text-sm font-medium text-foreground">{label}</label>}
+
   <input {...props} className={`
           w-full rounded-lg
-          border border-white/10
-          bg-white/5
+          border border-border
+          bg-muted
           px-4 py-3
-          text-sm text-white
+          text-sm text-foreground
           outline-none
-          placeholder:text-gray-500
+          placeholder:text-muted-foreground
           transition
-          focus:border-orange-500
+          focus:border-primary
           ${error ? "border-red-500" : ""}
           ${className}
         `}/>

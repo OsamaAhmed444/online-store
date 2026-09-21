@@ -27,10 +27,10 @@ export default function Pagination({
           flex h-9 w-9
           items-center justify-center
           rounded-lg
-          border border-white/10
-          text-gray-400
+          border border-border
+          text-muted-foreground
           transition
-          hover:bg-white/5
+          hover:bg-surface-hover
           disabled:cursor-not-allowed
           disabled:opacity-40
         "
@@ -53,8 +53,8 @@ export default function Pagination({
             transition
             ${
               page === currentPage
-                ? "bg-orange-500 text-white"
-                : "border border-white/10 text-gray-400 hover:bg-white/5"
+                ? "bg-primary text-primary-foreground"
+                : "border border-border text-muted-foreground hover:bg-surface-hover"
             }
           `}
         >
@@ -70,10 +70,10 @@ export default function Pagination({
           flex h-9 w-9
           items-center justify-center
           rounded-lg
-          border border-white/10
-          text-gray-400
+          border border-border
+          text-muted-foreground
           transition
-          hover:bg-white/5
+          hover:bg-surface-hover
           disabled:cursor-not-allowed
           disabled:opacity-40
         "

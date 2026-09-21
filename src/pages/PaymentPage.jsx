@@ -77,11 +77,11 @@ const PaymentPage = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto py-8 px-4 bg-white rounded shadow mt-6">
+    <div className="max-w-lg mx-auto py-8 px-4 bg-surface border border-border text-foreground rounded shadow mt-6">
       <h2 className="text-2xl font-bold mb-6">Payment Details</h2>
 
       {errorMessage && (
-        <div className="p-3 mb-4 bg-red-100 text-red-700 border border-red-300 rounded text-sm">
+        <div className="p-3 mb-4 bg-red-500/10 text-red-400 border border-red-500/30 rounded text-sm">
           {errorMessage}
         </div>
       )}
@@ -99,7 +99,7 @@ const PaymentPage = () => {
         <button
           type="submit"
           disabled={isProcessing || (paymentMethod === 'stripe' && (!stripe || !isCardComplete))}
-          className="w-full bg-green-600 text-white py-3 rounded font-semibold hover:bg-green-700 transition disabled:bg-gray-400"
+          className="w-full bg-primary text-primary-foreground py-3 rounded font-semibold hover:bg-primary-hover transition disabled:opacity-50"
         >
           {isProcessing ? 'Processing Payment...' : 'Complete Order'}
         </button>

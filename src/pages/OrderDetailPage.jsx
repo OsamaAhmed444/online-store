@@ -65,7 +65,7 @@ const OrderDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#070809] text-orange-500">
+      <div className="flex min-h-screen items-center justify-center bg-background text-primary">
         <Loader2 className="animate-spin" size={40} />
       </div>
     );
@@ -73,12 +73,12 @@ const OrderDetailPage = () => {
 
   if (!order) {
     return (
-      <div className="min-h-screen bg-[#070809] px-5 py-20 text-center text-white">
+      <div className="min-h-screen bg-background px-5 py-20 text-center text-foreground">
         <h2 className="text-3xl font-bold">Order Not Found</h2>
 
         <button
           onClick={() => navigate("/orders")}
-          className="px-6 py-3 mt-6 font-bold text-black bg-orange-500 rounded-xl"
+          className="px-6 py-3 mt-6 font-bold text-primary-foreground bg-primary rounded-xl"
         >
           Back to Orders
         </button>
@@ -100,11 +100,11 @@ const OrderDetailPage = () => {
   const isCancelled = status.toLowerCase().includes("cancel");
 
   return (
-    <div className="min-h-screen bg-[#070809] text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <main className="px-5 py-10 mx-auto max-w-7xl md:px-10">
         <button
           onClick={() => navigate("/orders")}
-          className="flex items-center gap-2 mb-8 text-orange-500 transition hover:text-orange-400"
+          className="flex items-center gap-2 mb-8 text-primary transition hover:opacity-80"
         >
           <ArrowLeft size={18} />
           Back to Orders
@@ -112,15 +112,15 @@ const OrderDetailPage = () => {
 
         <div className="flex flex-col justify-between gap-5 mb-8 md:flex-row md:items-end">
           <div>
-            <p className="mb-2 text-sm font-bold uppercase tracking-[0.25em] text-orange-500">
+            <p className="mb-2 text-sm font-bold uppercase tracking-[0.25em] text-primary">
               Order Details
             </p>
 
             <h1 className="text-4xl font-black md:text-5xl">
-              Order <span className="text-orange-500">Details</span>
+              Order <span className="text-primary">Details</span>
             </h1>
 
-            <p className="mt-3 text-gray-400">
+            <p className="mt-3 text-muted-foreground">
               Order #{String(id).slice(-8).toUpperCase()}
             </p>
           </div>
@@ -136,16 +136,16 @@ const OrderDetailPage = () => {
           </span>
         </div>
 
-        <section className="mb-5 rounded-2xl border border-white/10 bg-[#111214] p-6 md:p-8">
+        <section className="mb-5 rounded-2xl border border-border bg-surface p-6 md:p-8">
           <div className="flex items-center gap-4 mb-8">
-            <div className="flex items-center justify-center w-12 h-12 text-orange-500 rounded-xl bg-orange-500/10">
+            <div className="flex items-center justify-center w-12 h-12 text-primary rounded-xl bg-primary/10">
               <Truck size={25} />
             </div>
 
             <div>
               <h2 className="text-xl font-bold">Order Progress</h2>
 
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 Track your order in real-time.
               </p>
             </div>
@@ -180,16 +180,16 @@ const OrderDetailPage = () => {
           </div>
         </section>
 
-        <section className="mb-5 rounded-2xl border border-white/10 bg-[#111214] p-6 md:p-8">
+        <section className="mb-5 rounded-2xl border border-border bg-surface p-6 md:p-8">
           <div className="flex items-center gap-4 mb-6">
-            <div className="flex items-center justify-center w-12 h-12 text-orange-500 rounded-xl bg-orange-500/10">
+            <div className="flex items-center justify-center w-12 h-12 text-primary rounded-xl bg-primary/10">
               <Package size={25} />
             </div>
 
             <div>
               <h2 className="text-xl font-bold">Items</h2>
 
-              <p className="text-sm text-gray-500">Product(s) in this order.</p>
+              <p className="text-sm text-muted-foreground">Product(s) in this order.</p>
             </div>
           </div>
 
@@ -206,23 +206,23 @@ const OrderDetailPage = () => {
               return (
                 <div
                   key={item?._id || index}
-                  className="flex items-center justify-between rounded-xl border border-white/10 bg-[#17181c] p-4"
+                  className="flex items-center justify-between rounded-xl border border-border bg-muted p-4"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-[#22242a] text-gray-300">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-surface-hover text-muted-foreground">
                       <Package size={28} />
                     </div>
 
                     <div>
                       <h3 className="font-semibold">{name}</h3>
 
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-muted-foreground">
                         Qty: {quantity} × EGP {Number(price).toLocaleString()}
                       </p>
                     </div>
                   </div>
 
-                  <p className="font-bold text-orange-500">
+                  <p className="font-bold text-primary">
                     EGP {(Number(price) * quantity).toLocaleString()}
                   </p>
                 </div>
@@ -232,65 +232,65 @@ const OrderDetailPage = () => {
         </section>
 
         <div className="grid gap-5 md:grid-cols-2">
-          <section className="rounded-2xl border border-white/10 bg-[#111214] p-6">
+          <section className="rounded-2xl border border-border bg-surface p-6">
             <div className="flex items-center gap-4 mb-5">
-              <div className="flex items-center justify-center text-orange-500 h-11 w-11 rounded-xl bg-orange-500/10">
+              <div className="flex items-center justify-center text-primary h-11 w-11 rounded-xl bg-primary/10">
                 <MapPin size={23} />
               </div>
 
               <div>
                 <h2 className="font-bold">Shipping Address</h2>
 
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   Where we'll deliver your order.
                 </p>
               </div>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-[#17181c] p-5">
+            <div className="rounded-xl border border-border bg-muted p-5">
               <p className="font-bold">
                 {address?.name || address?.fullName || "Customer"}
               </p>
 
-              <p className="mt-1 text-gray-400">
+              <p className="mt-1 text-muted-foreground">
                 {address?.street || address?.address || "Street address"}
               </p>
 
-              <p className="text-gray-400">
+              <p className="text-muted-foreground">
                 {address?.city || "Cairo"}, {address?.country || "Egypt"}
               </p>
 
-              <p className="text-gray-400">{address?.phone || "0000000000"}</p>
+              <p className="text-muted-foreground">{address?.phone || "0000000000"}</p>
             </div>
           </section>
 
-          <section className="rounded-2xl border border-white/10 bg-[#111214] p-6">
+          <section className="rounded-2xl border border-border bg-surface p-6">
             <div className="flex items-center gap-4 mb-5">
-              <div className="flex items-center justify-center text-orange-500 h-11 w-11 rounded-xl bg-orange-500/10">
+              <div className="flex items-center justify-center text-primary h-11 w-11 rounded-xl bg-primary/10">
                 <CreditCard size={23} />
               </div>
 
               <div>
                 <h2 className="font-bold">Payment</h2>
 
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   Payment method and summary.
                 </p>
               </div>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-[#17181c] p-4">
+            <div className="rounded-xl border border-border bg-muted p-4">
               {paymentMethod}
             </div>
 
             <div className="mt-5">
-              <p className="text-sm text-gray-500">Total</p>
+              <p className="text-sm text-muted-foreground">Total</p>
 
-              <p className="text-3xl font-black text-orange-500">
+              <p className="text-3xl font-black text-primary">
                 EGP {Number(total).toLocaleString()}
               </p>
 
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Placed on{" "}
                 {order?.createdAt
                   ? new Date(order.createdAt).toLocaleDateString()
@@ -305,7 +305,7 @@ const OrderDetailPage = () => {
             <button
               onClick={handleCancelOrder}
               disabled={cancelLoading}
-              className="flex items-center gap-2 px-8 py-3 font-bold transition bg-red-600 rounded-xl hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex items-center gap-2 px-8 py-3 font-bold text-danger-foreground transition bg-danger rounded-xl hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {cancelLoading ? (
                 <Loader2 size={20} className="animate-spin" />
@@ -328,8 +328,8 @@ const ProgressStep = ({ icon, title, active }) => {
       <div
         className={`flex h-11 w-11 items-center justify-center rounded-full border ${
           active
-            ? "border-orange-500 bg-orange-500 text-black"
-            : "border-gray-700 bg-[#17181c] text-gray-500"
+            ? "border-primary bg-primary text-primary-foreground"
+            : "border-border bg-muted text-muted-foreground"
         }`}
       >
         {icon}
@@ -337,7 +337,7 @@ const ProgressStep = ({ icon, title, active }) => {
 
       <p
         className={`mt-3 text-xs font-semibold md:text-sm ${
-          active ? "text-orange-500" : "text-gray-500"
+          active ? "text-primary" : "text-muted-foreground"
         }`}
       >
         {title}

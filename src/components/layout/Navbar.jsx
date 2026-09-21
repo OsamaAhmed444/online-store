@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Menu, Search, ShoppingCart, User, Heart } from "lucide-react";
+import { Menu, Search, ShoppingCart, User, Heart, Sun, Moon } from "lucide-react";
 
 import useAuth from "../../hooks/useAuth";
 import { useCart } from "../../hooks/useCart";
+import useTheme from "../../hooks/useTheme";
 import MobileDrawer from "./MobileDrawer";
 
 const navLinks = [
@@ -16,6 +17,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useAuth();
   const { itemCount } = useCart();
+  const { isDark, toggleTheme } = useTheme();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -38,21 +40,25 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-[#0a0a0a]/95 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-border bg-background">
         <div className="flex items-center justify-between h-16 max-w-6xl gap-4 px-4 mx-auto">
           <button
             type="button"
             onClick={() => setIsDrawerOpen(true)}
-            className="flex items-center justify-center w-10 h-10 text-white rounded-lg lg:hidden hover:bg-white/5"
+            className="flex items-center justify-center w-10 h-10 rounded-lg text-foreground lg:hidden hover:bg-surface-hover"
             aria-label="Open menu"
           >
             <Menu size={22} />
           </button>
 
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <img src="/icon.png" alt="Logo" className="object-contain w-8 h-8" />
-            <span className="hidden text-lg font-bold tracking-tight text-white sm:inline">
-              Koda <span className="text-orange-500">Store</span>
+          <Link to="/" className="hidden items-center gap-2 shrink-0 sm:flex">
+            <img
+              src="/icon.png"
+              alt="Logo"
+              className="object-contain w-8 h-8"
+            />
+            <span className="text-lg font-bold tracking-tight text-foreground">
+              Koda <span className="text-primary">Store</span>
             </span>
           </Link>
 
@@ -65,8 +71,8 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `rounded-lg px-4 py-2 text-sm font-medium transition ${
                     isActive
-                      ? "bg-orange-500/10 text-orange-500"
-                      : "text-gray-300 hover:text-white"
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:text-foreground"
                   }`
                 }
               >
@@ -82,22 +88,31 @@ const Navbar = () => {
             <div className="relative w-full">
               <Search
                 size={16}
-                className="absolute -translate-y-1/2 left-3 top-1/2 text-zinc-500"
+                className="absolute -translate-y-1/2 left-3 top-1/2 text-muted-foreground"
               />
               <input
                 type="text"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search products..."
-                className="w-full rounded-xl border border-white/10 bg-white/5 py-2 pl-9 pr-3 text-sm text-white placeholder-zinc-500 outline-none transition focus:border-orange-500"
+                className="w-full rounded-xl border border-border bg-muted py-2 pl-9 pr-3 text-sm text-foreground placeholder-muted-foreground outline-none transition focus:border-primary"
               />
             </div>
           </form>
 
           <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="flex items-center justify-center w-10 h-10 rounded-lg text-muted-foreground transition hover:bg-surface-hover hover:text-foreground"
+              aria-label="Toggle theme"
+            >
+              {isDark ? <Sun size={19} /> : <Moon size={19} />}
+            </button>
+
             <Link
               to="/wishlist"
-              className="items-center justify-center hidden w-10 h-10 text-gray-300 rounded-lg sm:flex hover:bg-white/5 hover:text-white"
+              className="items-center justify-center hidden w-10 h-10 rounded-lg text-muted-foreground sm:flex hover:bg-surface-hover hover:text-foreground"
               aria-label="Wishlist"
             >
               <Heart size={20} />
@@ -105,12 +120,12 @@ const Navbar = () => {
 
             <Link
               to="/cart"
-              className="relative flex items-center justify-center w-10 h-10 text-gray-300 rounded-lg hover:bg-white/5 hover:text-white"
+              className="relative flex items-center justify-center w-10 h-10 rounded-lg text-muted-foreground hover:bg-surface-hover hover:text-foreground"
               aria-label="Cart"
             >
               <ShoppingCart size={20} />
               {itemCount > 0 && (
-                <span className="absolute flex items-center justify-center w-5 h-5 text-[10px] font-bold text-black bg-orange-500 rounded-full -top-1 -right-1">
+                <span className="absolute flex items-center justify-center w-5 h-5 text-[10px] font-bold text-primary-foreground bg-primary rounded-full -top-1 -right-1">
                   {itemCount > 9 ? "9+" : itemCount}
                 </span>
               )}
@@ -120,7 +135,7 @@ const Navbar = () => {
               <div className="items-center hidden gap-2 lg:flex">
                 <Link
                   to="/profile"
-                  className="flex items-center justify-center w-10 h-10 text-gray-300 rounded-lg hover:bg-white/5 hover:text-white"
+                  className="flex items-center justify-center w-10 h-10 rounded-lg text-muted-foreground hover:bg-surface-hover hover:text-foreground"
                   aria-label="Profile"
                 >
                   <User size={20} />
@@ -129,7 +144,7 @@ const Navbar = () => {
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="px-4 py-2 text-sm font-semibold text-white transition bg-red-600 rounded-lg hover:bg-red-500"
+                  className="rounded-lg bg-danger px-4 py-2 text-sm font-semibold text-danger-foreground transition hover:opacity-90"
                 >
                   Logout
                 </button>
@@ -137,7 +152,7 @@ const Navbar = () => {
             ) : (
               <Link
                 to="/login"
-                className="hidden px-4 py-2 text-sm font-semibold text-black transition bg-orange-500 rounded-lg lg:block hover:bg-orange-600"
+                className="hidden rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:bg-primary-hover lg:block"
               >
                 Login
               </Link>

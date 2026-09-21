@@ -12,7 +12,7 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto py-8 px-4 min-h-screen bg-background text-foreground">
       <AddressForm onSubmit={handleAddressSubmit} />
     </div>
   );

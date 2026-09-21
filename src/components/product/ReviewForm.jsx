@@ -76,7 +76,7 @@ const ReviewForm = ({ productId }) => {
                 className={`fa-star ${
                   star <= rating
                     ? "fa-solid text-yellow-400"
-                    : "fa-regular text-gray-300"
+                    : "fa-regular text-muted-foreground"
                 }`}
               />
             </button>

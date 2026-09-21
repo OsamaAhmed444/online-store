@@ -7,20 +7,20 @@ function CartSummary(props) {
   const onCheckout = props.onCheckout;
 
   return (
-    <div className="border rounded-lg p-4 bg-white">
+    <div className="border border-border rounded-lg p-4 bg-surface text-foreground">
       <h3 className="font-semibold text-lg mb-4">Order Summary</h3>
 
       <div className="flex justify-between text-sm mb-2">
-        <span className="text-gray-600">Subtotal</span>
+        <span className="text-muted-foreground">Subtotal</span>
         <span>${subtotal.toFixed(2)}</span>
       </div>
 
       <div className="flex justify-between text-sm mb-2">
-        <span className="text-gray-600">Discount</span>
-        <span className="text-green-600">-${discount.toFixed(2)}</span>
+        <span className="text-muted-foreground">Discount</span>
+        <span className="text-green-500">-${discount.toFixed(2)}</span>
       </div>
 
-      <div className="border-t my-3"></div>
+      <div className="border-t border-border my-3"></div>
 
       <div className="flex justify-between font-semibold mb-4">
         <span>Total</span>
@@ -30,7 +30,7 @@ function CartSummary(props) {
       <button
         type="button"
         onClick={onCheckout}
-        className="w-full py-2 bg-blue-600 text-white rounded text-sm"
+        className="w-full py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary-hover"
       >
         Checkout
       </button>

@@ -8,7 +8,7 @@ const ProductGrid = ({ products = [], loading = false }) => {
         {Array.from({ length: 8 }).map((_, index) => (
           <div
             key={index}
-            className="aspect-[3/4] animate-pulse rounded-2xl border border-white/10 bg-[#111214]"
+            className="aspect-[3/4] animate-pulse rounded-2xl border border-border bg-surface"
           />
         ))}
       </div>

@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 
 export default function Modal({
-  isOpen,
+  isOpen = true,
   onClose,
   title,
   children,
@@ -14,7 +14,7 @@ export default function Modal({
     return null;
   }
 
-  const isConfirmation = variant === "confirmation";
+  const isConfirmation = variant === "confirmation" || Boolean(onConfirm);
 
   return (
     <div
@@ -30,8 +30,8 @@ export default function Modal({
         className="
           relative w-full max-w-md
           rounded-xl
-          border border-white/10
-          bg-[#111]
+          border border-border
+          bg-surface
           p-6
           shadow-2xl
         "
@@ -42,9 +42,9 @@ export default function Modal({
           onClick={onClose}
           className="
             absolute right-4 top-4
-            text-gray-400
+            text-muted-foreground
             transition
-            hover:text-white
+            hover:text-foreground
           "
           aria-label="Close modal"
         >
@@ -52,12 +52,12 @@ export default function Modal({
         </button>
 
         {title && (
-          <h2 className="mb-4 pr-8 text-xl font-semibold text-white">
+          <h2 className="mb-4 pr-8 text-xl font-semibold text-foreground">
             {title}
           </h2>
         )}
 
-        <div className="text-sm text-gray-400">
+        <div className="text-sm text-muted-foreground">
           {children}
         </div>
 
@@ -68,11 +68,11 @@ export default function Modal({
               onClick={onClose}
               className="
                 rounded-lg
-                border border-white/10
+                border border-border
                 px-4 py-2
-                text-sm text-gray-300
+                text-sm text-muted-foreground
                 transition
-                hover:bg-white/5
+                hover:bg-surface-hover
               "
             >
               {cancelText}
@@ -83,11 +83,11 @@ export default function Modal({
               onClick={onConfirm}
               className="
                 rounded-lg
-                bg-orange-500
+                bg-primary
                 px-4 py-2
-                text-sm font-medium text-white
+                text-sm font-medium text-primary-foreground
                 transition
-                hover:bg-orange-600
+                hover:bg-primary-hover
               "
             >
               {confirmText}

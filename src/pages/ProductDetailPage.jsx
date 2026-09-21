@@ -10,6 +10,8 @@ import {
 } from "../api/wishlistApi";
 
 import { cartContext1 } from "../context/CartContext";
+import { getProductImages } from "../utils/productImage";
+import { normalizeProduct } from "../utils/normalizeProduct";
 
 import ProductGallery from "../components/product/ProductGallery";
 import ReviewList from "../components/product/ReviewList";
@@ -40,7 +42,11 @@ const ProductDetailPage = () => {
 
         const response = await getProduct(id);
 
-        setProduct(response.data);
+        setProduct(
+          normalizeProduct(
+            response.data?.product || response.data?.data || response.data
+          )
+        );
       } catch (err) {
         console.error("Product loading failed:", err);
         setError("Failed to load product.");
@@ -60,19 +66,19 @@ const ProductDetailPage = () => {
       try {
         const response = await getMyWishlist();
 
-        const wishlist = response.data;
+        const data = response.data;
+        const wishlist = Array.isArray(data)
+          ? data
+          : data?.items || data?.wishlist || data?.data || [];
 
-        if (Array.isArray(wishlist)) {
-          const productId = Number(id);
+        const exists = wishlist.some((item) => {
+          const productId =
+            item?.productId || item?.product?._id || item?.product?.id || item?._id;
 
-          const exists = wishlist.some(
-            (item) =>
-              Number(item.productId) === productId ||
-              Number(item.product?.id) === productId
-          );
+          return String(productId) === String(id);
+        });
 
-          setIsWishlist(exists);
-        }
+        setIsWishlist(exists);
       } catch (err) {
         console.error("Wishlist check failed:", err);
       }
@@ -88,7 +94,7 @@ const ProductDetailPage = () => {
     try {
       setCartLoading(true);
 
-      await addItemToCart(Number(product.id), quantity);
+      await addItemToCart(product.id, quantity);
 
       toast.success("Product added to cart successfully!");
     } catch (err) {
@@ -158,12 +164,14 @@ const ProductDetailPage = () => {
     );
   }
 
-  const images =
-    product.images ||
-    product.imageUrls ||
-    (product.image ? [product.image] : []);
+  const images = getProductImages(product);
 
   const price = Number(product.price || 0);
+
+  const categoryLabel =
+    typeof product.category === "string"
+      ? product.category
+      : product.category?.name;
 
   return (
     <div className="min-h-screen bg-background px-4 py-8 sm:px-6 lg:px-8">
@@ -191,9 +199,9 @@ const ProductDetailPage = () => {
           {/* Product Information */}
           <div className="flex flex-col">
             {/* Category */}
-            {product.category?.name && (
-              <p className="mb-3 text-sm font-medium text-muted-foreground">
-                {product.category.name}
+            {categoryLabel && (
+              <p className="mb-3 text-sm font-medium capitalize text-muted-foreground">
+                {categoryLabel}
               </p>
             )}
 
@@ -211,7 +219,7 @@ const ProductDetailPage = () => {
                     className={`fa-star fa-sm ${
                       star <= Math.round(product.rating || 0)
                         ? "fa-solid text-yellow-400"
-                        : "fa-regular text-gray-300"
+                        : "fa-regular text-muted-foreground"
                     }`}
                   />
                 ))}

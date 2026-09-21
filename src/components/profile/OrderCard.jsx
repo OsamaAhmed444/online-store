@@ -45,12 +45,12 @@ const OrderCard = ({ order, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="group w-full rounded-2xl border border-white/10 bg-[#111214] p-5 text-left transition duration-300 hover:border-orange-500/50 hover:bg-[#151619]"
+      className="group w-full rounded-2xl border border-border bg-surface p-5 text-left transition duration-300 hover:border-primary/50 hover:bg-surface-hover"
     >
       <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-3">
-            <h3 className="font-bold text-white">
+            <h3 className="font-bold text-foreground">
               #{String(orderId).slice(-8).toUpperCase()}
             </h3>
 
@@ -61,17 +61,17 @@ const OrderCard = ({ order, onClick }) => {
             </span>
           </div>
 
-          <div className="mt-2 text-sm text-gray-400">
+          <div className="mt-2 text-sm text-muted-foreground">
             {date}
             <span className="mx-2">•</span>
             {items.length || 0} item(s)
           </div>
 
           <div className="mt-2">
-            <p className="font-semibold text-white">{productName}</p>
+            <p className="font-semibold text-foreground">{productName}</p>
 
             {description && (
-              <p className="mt-1 text-sm text-gray-500 line-clamp-1">
+              <p className="mt-1 text-sm text-muted-foreground line-clamp-1">
                 {description}
               </p>
             )}
@@ -79,15 +79,15 @@ const OrderCard = ({ order, onClick }) => {
         </div>
 
         <div className="flex items-center justify-between gap-6 md:min-w-[240px] md:justify-end">
-          <div className="md:border-l md:border-white/10 md:pl-8">
-            <p className="text-sm text-gray-500">Total Amount</p>
+          <div className="md:border-l md:border-border md:pl-8">
+            <p className="text-sm text-muted-foreground">Total Amount</p>
 
-            <p className="text-2xl font-bold text-orange-500">
+            <p className="text-2xl font-bold text-primary">
               EGP {Number(total).toLocaleString()}
             </p>
           </div>
 
-          <div className="flex items-center justify-center w-12 h-12 text-gray-400 transition border rounded-xl border-white/10 group-hover:border-orange-500 group-hover:bg-orange-500 group-hover:text-black">
+          <div className="flex items-center justify-center w-12 h-12 text-muted-foreground transition border rounded-xl border-border group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
             <ChevronRight size={23} />
           </div>
         </div>

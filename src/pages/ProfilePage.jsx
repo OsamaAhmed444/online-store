@@ -80,14 +80,14 @@ const ProfilePage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#000000] px-4 py-20 text-center text-gray-400">
+      <div className="min-h-screen bg-background px-4 py-20 text-center text-muted-foreground">
         Loading profile...
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen overflow-hidden bg-[#000000] text-white">
+    <div className="min-h-screen overflow-hidden bg-background text-foreground">
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-0">
         <div className="absolute right-[-200px] top-20 h-[500px] w-[500px] rounded-full" />
 
@@ -96,24 +96,24 @@ const ProfilePage = () => {
 
       <main className="relative z-10 max-w-6xl px-4 py-12 mx-auto md:px-8">
         <section className="mb-8">
-          <p className="mb-2 text-sm font-bold uppercase tracking-[0.3em] text-orange-500">
+          <p className="mb-2 text-sm font-bold uppercase tracking-[0.3em] text-primary">
             Account
           </p>
 
           <h1 className="text-4xl font-black md:text-5xl">
-            My <span className="text-orange-500">Profile</span>
+            My <span className="text-primary">Profile</span>
           </h1>
 
-          <p className="mt-2 text-gray-400">
+          <p className="mt-2 text-muted-foreground">
             Manage your personal information and account settings.
           </p>
         </section>
 
-        <section className="mb-4 rounded-2xl border border-white/10 bg-[#111214]/90 p-5 shadow-xl backdrop-blur md:p-7">
+        <section className="mb-4 rounded-2xl border border-border bg-surface/90 p-5 shadow-xl backdrop-blur md:p-7">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-5">
               <div className="relative">
-                <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-orange-500 bg-[#1b1c20]">
+                <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-primary bg-muted">
                   {user?.image || user?.avatar ? (
                     <img
                       src={user.image || user.avatar}
@@ -121,11 +121,11 @@ const ProfilePage = () => {
                       className="object-cover w-full h-full"
                     />
                   ) : (
-                    <User size={42} className="text-orange-500" />
+                    <User size={42} className="text-primary" />
                   )}
                 </div>
 
-                <div className="absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#111214] bg-orange-500 text-black">
+                <div className="absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full border-2 border-surface bg-primary text-primary-foreground">
                   <User size={14} />
                 </div>
               </div>
@@ -143,20 +143,20 @@ const ProfilePage = () => {
                   />
                 </div>
 
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-muted-foreground">
                   {user?.email || "admin@koda.com"}
                 </p>
 
-                <p className="text-sm text-gray-400">{user?.role || "Admin"}</p>
+                <p className="text-sm text-muted-foreground">{user?.role || "Admin"}</p>
 
                 <div className="mt-3 space-y-1">
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <Mail size={15} className="text-orange-500" />
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Mail size={15} className="text-primary" />
                     {user?.email || "admin@koda.com"}
                   </div>
 
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <Phone size={15} className="text-orange-500" />
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Phone size={15} className="text-primary" />
                     {user?.phone || "01000000000"}
                   </div>
                 </div>
@@ -165,7 +165,7 @@ const ProfilePage = () => {
 
             <button
               onClick={() => setShowEdit(true)}
-              className="flex items-center justify-center gap-2 px-5 py-3 font-semibold text-orange-500 transition border border-orange-500 rounded-xl hover:bg-orange-500 hover:text-black"
+              className="flex items-center justify-center gap-2 px-5 py-3 font-semibold text-primary transition border border-primary rounded-xl hover:bg-primary hover:text-primary-foreground"
             >
               <Pencil size={17} />
               Edit Profile
@@ -173,16 +173,16 @@ const ProfilePage = () => {
           </div>
         </section>
 
-        <section className="mb-4 rounded-2xl border border-white/10 bg-[#111214]/90 p-5 md:p-7">
+        <section className="mb-4 rounded-2xl border border-border bg-surface/90 p-5 md:p-7">
           <div className="flex items-center gap-3 mb-6">
-            <div className="flex items-center justify-center text-orange-500 h-11 w-11 rounded-xl bg-orange-500/10">
+            <div className="flex items-center justify-center text-primary h-11 w-11 rounded-xl bg-primary/10">
               <MapPin size={22} />
             </div>
 
             <div>
               <h2 className="text-xl font-bold">Addresses</h2>
 
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 Manage your shipping addresses.
               </p>
             </div>
@@ -208,23 +208,23 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          <button className="flex items-center gap-2 px-5 py-3 mt-5 font-semibold text-orange-500 transition border border-orange-500 rounded-xl hover:bg-orange-500 hover:text-black">
+          <button className="flex items-center gap-2 px-5 py-3 mt-5 font-semibold text-primary transition border border-primary rounded-xl hover:bg-primary hover:text-primary-foreground">
             <Plus size={19} />
             Add Address
           </button>
         </section>
 
-        <section className="mb-4 rounded-2xl border border-white/10 bg-[#111214]/90 p-5 md:p-7">
+        <section className="mb-4 rounded-2xl border border-border bg-surface/90 p-5 md:p-7">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center text-orange-500 h-11 w-11 rounded-xl bg-orange-500/10">
+              <div className="flex items-center justify-center text-primary h-11 w-11 rounded-xl bg-primary/10">
                 <Lock size={22} />
               </div>
 
               <div>
                 <h2 className="text-xl font-bold">Change Password</h2>
 
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-muted-foreground">
                   Keep your account secure.
                 </p>
               </div>
@@ -232,7 +232,7 @@ const ProfilePage = () => {
 
             <button
               onClick={() => setShowPassword(true)}
-              className="flex items-center justify-center gap-2 px-5 py-3 font-semibold text-orange-500 transition border border-orange-500 rounded-xl hover:bg-orange-500 hover:text-black"
+              className="flex items-center justify-center gap-2 px-5 py-3 font-semibold text-primary transition border border-primary rounded-xl hover:bg-primary hover:text-primary-foreground"
             >
               <Lock size={17} />
               Change Password
@@ -242,7 +242,7 @@ const ProfilePage = () => {
 
         <button
           onClick={handleLogout}
-          className="flex items-center justify-center w-full gap-2 py-4 font-bold transition bg-red-600 rounded-xl hover:bg-red-500"
+          className="flex items-center justify-center w-full gap-2 py-4 font-bold text-danger-foreground transition bg-danger rounded-xl hover:opacity-90"
         >
           <LogOut size={20} />
           Logout
@@ -267,14 +267,14 @@ const ProfilePage = () => {
 const AddressInput = ({ icon, placeholder }) => {
   return (
     <div className="relative">
-      <span className="absolute text-orange-500 -translate-y-1/2 left-4 top-1/2">
+      <span className="absolute text-primary -translate-y-1/2 left-4 top-1/2">
         {icon}
       </span>
 
       <input
         type="text"
         placeholder={placeholder}
-        className="w-full rounded-xl border border-white/10 bg-[#17181c] py-3 pl-12 pr-4 text-white placeholder:text-gray-500 outline-none transition focus:border-orange-500"
+        className="w-full rounded-xl border border-border bg-muted py-3 pl-12 pr-4 text-foreground placeholder:text-muted-foreground outline-none transition focus:border-primary"
       />
     </div>
   );

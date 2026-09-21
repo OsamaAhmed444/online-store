@@ -27,21 +27,21 @@ const ChangePasswordForm = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/80 backdrop-blur-sm">
-      <div className="w-full max-w-lg rounded-2xl border border-orange-500/30 bg-[#101114] p-6 shadow-2xl shadow-orange-500/10">
+      <div className="w-full max-w-lg rounded-2xl border border-primary/30 bg-surface p-6 shadow-2xl shadow-primary/10">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-white">
-              Change <span className="text-orange-500">Password</span>
+            <h2 className="text-2xl font-bold text-foreground">
+              Change <span className="text-primary">Password</span>
             </h2>
 
-            <p className="mt-1 text-sm text-gray-400">
+            <p className="mt-1 text-sm text-muted-foreground">
               Keep your account secure
             </p>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 text-gray-400 rounded-full hover:bg-white/10 hover:text-white"
+            className="p-2 text-muted-foreground rounded-full hover:bg-surface-hover hover:text-foreground"
           >
             <X size={22} />
           </button>
@@ -79,14 +79,14 @@ const ChangePasswordForm = ({ onClose }) => {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-3 font-semibold text-gray-300 border rounded-xl border-white/10 bg-white/5 hover:bg-white/10"
+              className="flex-1 py-3 font-semibold text-muted-foreground border rounded-xl border-border bg-muted hover:bg-surface-hover"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="flex items-center justify-center flex-1 gap-2 py-3 font-semibold text-black bg-orange-500 rounded-xl hover:bg-orange-400"
+              className="flex items-center justify-center flex-1 gap-2 py-3 font-semibold text-primary-foreground bg-primary rounded-xl hover:bg-primary-hover"
             >
               <Lock size={18} />
               Change Password
@@ -101,14 +101,14 @@ const ChangePasswordForm = ({ onClose }) => {
 const PasswordInput = ({ label, name, value, onChange, show, setShow }) => {
   return (
     <div>
-      <label className="block mb-2 text-sm font-medium text-gray-300">
+      <label className="block mb-2 text-sm font-medium text-muted-foreground">
         {label}
       </label>
 
       <div className="relative">
         <Lock
           size={18}
-          className="absolute text-orange-500 -translate-y-1/2 left-4 top-1/2"
+          className="absolute text-primary -translate-y-1/2 left-4 top-1/2"
         />
 
         <input
@@ -116,13 +116,13 @@ const PasswordInput = ({ label, name, value, onChange, show, setShow }) => {
           name={name}
           value={value}
           onChange={onChange}
-          className="w-full rounded-xl border border-white/10 bg-[#17181c] py-3 pl-12 pr-12 text-white outline-none focus:border-orange-500"
+          className="w-full rounded-xl border border-border bg-muted py-3 pl-12 pr-12 text-foreground outline-none focus:border-primary"
         />
 
         <button
           type="button"
           onClick={() => setShow(!show)}
-          className="absolute text-gray-400 -translate-y-1/2 right-4 top-1/2 hover:text-white"
+          className="absolute text-muted-foreground -translate-y-1/2 right-4 top-1/2 hover:text-foreground"
         >
           {show ? <EyeOff size={19} /> : <Eye size={19} />}
         </button>

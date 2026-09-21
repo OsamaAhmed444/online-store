@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CartItem from "../components/cart/CartItem";
 import CartSummary from "../components/cart/CartSummary";
 import CouponInput from "../components/cart/CouponInput";
@@ -12,6 +13,7 @@ import {
 } from "../api/cartApi";
 
 function CartPage() {
+  const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [discount, setDiscount] = useState(0);
@@ -113,7 +115,7 @@ function CartPage() {
   }
 
   function handleCheckout() {
-    alert("Go to checkout");
+    navigate("/checkout");
   }
 
   function getItemId(item) {

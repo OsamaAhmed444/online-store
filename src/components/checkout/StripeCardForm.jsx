@@ -1,15 +1,16 @@
 import React from 'react';
 import { CardElement } from '@stripe/react-stripe-js';
+import useTheme from '../../hooks/useTheme';
 
-const CARD_ELEMENT_OPTIONS = {
+const getCardElementOptions = (isDark) => ({
   style: {
     base: {
-      color: '#32325d',
+      color: isDark ? '#f5f5f6' : '#14171a',
       fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
       fontSmoothing: 'antialiased',
       fontSize: '16px',
       '::placeholder': {
-        color: '#aab7c4',
+        color: isDark ? '#9aa0a8' : '#5b6470',
       },
     },
     invalid: {
@@ -17,16 +18,18 @@ const CARD_ELEMENT_OPTIONS = {
       iconColor: '#fa755a',
     },
   },
-};
+});
 
 const StripeCardForm = ({ onChange }) => {
+  const { isDark } = useTheme();
+
   return (
-    <div className="p-4 border rounded bg-gray-50 mb-4">
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+    <div className="p-4 border border-border rounded bg-muted mb-4">
+      <label className="block text-sm font-medium text-foreground mb-2">
         Card Details
       </label>
-      <div className="p-3 bg-white border rounded shadow-sm">
-        <CardElement options={CARD_ELEMENT_OPTIONS} onChange={onChange} />
+      <div className="p-3 bg-surface border border-border rounded shadow-sm">
+        <CardElement options={getCardElementOptions(isDark)} onChange={onChange} />
       </div>
     </div>
   );
