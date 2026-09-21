@@ -43,12 +43,14 @@ export default function AuthContext({ children }) {
     }
   };
 
-  const login = async (email, password) => {
+  const login = async (emailOrData, password) => {
     try {
-      const response = await loginapi({
-        email,
-        password,
-      });
+      const credentials =
+        typeof emailOrData === "object" && emailOrData !== null
+          ? emailOrData
+          : { email: emailOrData, password };
+
+      const response = await loginapi(credentials);
       sessionStorage.setItem("token", response.data.token);
       setToken(response.data.token);
       setUser(response.data.user);
@@ -57,6 +59,34 @@ export default function AuthContext({ children }) {
     } catch (error) {
       throw error;
     }
+  };
+
+  // Alias expected by RegisterPage: sends the full registration payload
+  // (username, email, password, phone) to the register/send-otp endpoint.
+  const registerUser = async (data) => {
+    setLoading(true);
+    try {
+      sessionStorage.setItem("pendingRegisterEmail", data.email);
+      const response = await sendRegisterOtp(data);
+      return response.data;
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Alias expected by VerifyOtpPage: pairs the OTP with the email
+  // stashed by registerUser/sendOtp since that page only collects the code.
+  const VerifyOtp = async (otp) => {
+    const email = sessionStorage.getItem("pendingRegisterEmail");
+    return verifyOtp({ email, otp });
+  };
+
+  // Alias expected by ForgotPasswordPage.
+  const forgotPassword = async (email) => {
+    sessionStorage.setItem("pendingResetEmail", email);
+    return forgetPasswordOtp({ email });
   };
 
   const forgetPasswordOtp = async ({ email }) => {
@@ -132,7 +162,10 @@ export default function AuthContext({ children }) {
         sendOtp,
         verifyOtp,
         forgetPasswordOtp,
-        verifyPasswordOtp
+        verifyPasswordOtp,
+        registerUser,
+        VerifyOtp,
+        forgotPassword,
       }}
     >
       {children}

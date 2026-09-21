@@ -6,7 +6,7 @@ import useAuth from '../hooks/useAuth';
 export default function VerifyOtpPage (){
     const navigate = useNavigate();
     const {VerifyOtp} = useAuth();
-    const {register, handelSubmite ,formState: { errors, isSubmitting },} = useForm();
+    const {register, handleSubmit ,formState: { errors, isSubmitting },} = useForm();
     const onSubmit = async (data) => {
    try {
       await VerifyOtp(data.otp);
@@ -27,7 +27,7 @@ export default function VerifyOtpPage (){
         </div>
 
         {/* Form */}
-        <form onSubmit={handelSubmite(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block text-xs text-zinc-300 mb-2">OTP Code</label>
             <input type="text" maxLength={6} placeholder="123456" className="w-full bg-[#1c1c1e] border border-[#27272a] rounded-xl px-4 py-3 text-center text-lg tracking-widest text-white focus:outline-none focus:border-[#f97316]"

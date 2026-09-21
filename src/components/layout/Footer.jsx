@@ -1,5 +1,11 @@
 import { Link } from "react-router-dom";
-import { Facebook, Instagram, Github, Linkedin } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebook,
+  faInstagram,
+  faGithub,
+  faLinkedin,
+} from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
   const year = new Date().getFullYear();
@@ -70,28 +76,28 @@ const Footer = () => {
               aria-label="Facebook"
               className="flex items-center justify-center w-9 h-9 rounded-full bg-white/5 transition hover:bg-orange-500 hover:text-black"
             >
-              <Facebook size={16} />
+              <FontAwesomeIcon icon={faFacebook} />
             </a>
             <a
               href="#"
               aria-label="Instagram"
               className="flex items-center justify-center w-9 h-9 rounded-full bg-white/5 transition hover:bg-orange-500 hover:text-black"
             >
-              <Instagram size={16} />
+              <FontAwesomeIcon icon={faInstagram} />
             </a>
             <a
               href="#"
               aria-label="LinkedIn"
               className="flex items-center justify-center w-9 h-9 rounded-full bg-white/5 transition hover:bg-orange-500 hover:text-black"
             >
-              <Linkedin size={16} />
+              <FontAwesomeIcon icon={faLinkedin} />
             </a>
             <a
               href="#"
               aria-label="GitHub"
               className="flex items-center justify-center w-9 h-9 rounded-full bg-white/5 transition hover:bg-orange-500 hover:text-black"
             >
-              <Github size={16} />
+              <FontAwesomeIcon icon={faGithub} />
             </a>
           </div>
         </div>
