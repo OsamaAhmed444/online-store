@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import PaymentMethodSelector from '../components/checkout/PaymentMethodSelector';
 import StripeCardForm from '../components/checkout/StripeCardForm';
-import { createOrder } from '../api/ordersApi';
-import { useCart } from '../context/CartContext'; // تأكدي من مسار useCart عندك
+import { placeOrder } from '../api/ordersApi';
+import { useCart } from '../hooks/useCart';
 
 const PaymentPage = () => {
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
-  const { cartItems, clearCart } = useCart();
+  const { cart, removeItemCart } = useCart();
+  const cartItems = cart?.items || [];
 
   const [paymentMethod, setPaymentMethod] = useState('stripe');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -61,12 +62,12 @@ const PaymentPage = () => {
         paymentMethod,
       };
 
-      const createdOrder = await createOrder(orderData);
+      const createdOrder = await placeOrder(orderData);
 
       // مسح السلة والتنقل لصفحة النجاح
-      clearCart();
+      await removeItemCart();
       localStorage.removeItem('shippingAddress');
-      navigate('/order-success', { state: { order: createdOrder } });
+      navigate('/order-success', { state: { order: createdOrder?.data } });
 
     } catch (err) {
       setErrorMessage(err.message || 'حدث خطأ أثناء إتمام الطلب، برجاء المحاولة مرة أخرى.');
