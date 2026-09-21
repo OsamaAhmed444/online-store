@@ -80,18 +80,18 @@ const ProfilePage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#070809] px-4 py-20 text-center text-gray-400">
+      <div className="min-h-screen bg-[#000000] px-4 py-20 text-center text-gray-400">
         Loading profile...
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen overflow-hidden bg-[#070809] text-white">
+    <div className="min-h-screen overflow-hidden bg-[#000000] text-white">
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-0">
-        <div className="absolute right-[-200px] top-20 h-[500px] w-[500px] rounded-full bg-orange-600/10 blur-[120px]" />
+        <div className="absolute right-[-200px] top-20 h-[500px] w-[500px] rounded-full" />
 
-        <div className="absolute left-[-200px] bottom-20 h-[500px] w-[500px] rounded-full bg-orange-500/5 blur-[120px]" />
+        <div className="absolute left-[-200px] bottom-20 h-[500px] w-[500px] rounded-full" />
       </div>
 
       <main className="relative z-10 max-w-6xl px-4 py-12 mx-auto md:px-8">

@@ -39,7 +39,7 @@ const MyOrdersPage = () => {
     <div className="min-h-screen bg-[#070809] text-white">
       <main>
         <section className="relative overflow-hidden border-b border-orange-500/30">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_50%,rgba(255,102,0,0.25),transparent_35%)]" />
+          <div className="absolute inset-0 " />
 
           <div className="relative px-5 py-20 mx-auto max-w-7xl md:px-10">
             <p className="mb-3 text-sm font-bold uppercase tracking-[0.3em] text-orange-500">
