@@ -10,8 +10,7 @@ const PaymentPage = () => {
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
-  const { cart, removeItemCart } = useCart();
-  const cartItems = cart?.items || [];
+  const { removeItemCart } = useCart();
 
   const [paymentMethod, setPaymentMethod] = useState('stripe');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -55,9 +54,8 @@ const PaymentPage = () => {
         }
       }
 
-      // إنشاء الطلب عبر API
+      // إنشاء الطلب عبر API (الطلب يُبنى من سلة المستخدم المخزنة في السيرفر)
       const orderData = {
-        items: cartItems,
         shippingAddress,
         paymentMethod,
       };
@@ -67,10 +65,15 @@ const PaymentPage = () => {
       // مسح السلة والتنقل لصفحة النجاح
       await removeItemCart();
       localStorage.removeItem('shippingAddress');
-      navigate('/order-success', { state: { order: createdOrder?.data } });
+      navigate('/order-success', { state: { order: createdOrder?.data?.order } });
 
     } catch (err) {
-      setErrorMessage(err.message || 'حدث خطأ أثناء إتمام الطلب، برجاء المحاولة مرة أخرى.');
+      setErrorMessage(
+        err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          err.message ||
+          'حدث خطأ أثناء إتمام الطلب، برجاء المحاولة مرة أخرى.'
+      );
     } finally {
       setIsProcessing(false);
     }

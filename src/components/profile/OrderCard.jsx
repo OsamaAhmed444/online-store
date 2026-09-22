@@ -15,14 +15,15 @@ const OrderCard = ({ order, onClick }) => {
 
   const items = order?.items || order?.products || [];
 
-  const total = order?.totalAmount ?? order?.total ?? order?.grandTotal ?? 0;
+  const total =
+    order?.totalPrice ?? order?.totalAmount ?? order?.total ?? order?.grandTotal ?? 0;
 
   const firstItem = items?.[0];
 
   const productName =
+    firstItem?.name ||
     firstItem?.product?.name ||
     firstItem?.productName ||
-    firstItem?.name ||
     "Product";
 
   const description =

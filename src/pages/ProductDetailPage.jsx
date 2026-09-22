@@ -33,6 +33,8 @@ const ProductDetailPage = () => {
   const [isWishlist, setIsWishlist] = useState(false);
   const [wishlistLoading, setWishlistLoading] = useState(false);
 
+  const [reviewsRefreshKey, setReviewsRefreshKey] = useState(0);
+
   // Fetch product
   useEffect(() => {
     const fetchProduct = async () => {
@@ -69,9 +71,13 @@ const ProductDetailPage = () => {
         const data = response.data;
         const wishlist = Array.isArray(data)
           ? data
-          : data?.items || data?.wishlist || data?.data || [];
+          : data?.wishlist?.products ||
+            data?.products ||
+            data?.items ||
+            data?.data ||
+            [];
 
-        const exists = wishlist.some((item) => {
+        const exists = (Array.isArray(wishlist) ? wishlist : []).some((item) => {
           const productId =
             item?.productId || item?.product?._id || item?.product?.id || item?._id;
 
@@ -339,7 +345,7 @@ const ProductDetailPage = () => {
                 Customer Reviews
               </h2>
 
-              <ReviewList productId={product.id} />
+              <ReviewList productId={product.id} refreshKey={reviewsRefreshKey} />
             </div>
 
             <div>
@@ -347,7 +353,10 @@ const ProductDetailPage = () => {
                 Write a Review
               </h2>
 
-              <ReviewForm productId={product.id} />
+              <ReviewForm
+                productId={product.id}
+                onReviewAdded={() => setReviewsRefreshKey((k) => k + 1)}
+              />
             </div>
           </div>
         </section>

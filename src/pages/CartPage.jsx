@@ -48,7 +48,7 @@ function CartPage() {
 
   async function handleIncrease(id) {
     const item = items.find(function (x) {
-      return x.id === id || x.productId === id;
+      return getItemId(x) === id;
     });
     if (!item) return;
 
@@ -56,7 +56,7 @@ function CartPage() {
 
     try {
       await updateCartItem({
-        productId: item.productId || item.id,
+        productId: getItemId(item),
         quantity: newQty,
       });
       loadCart();
@@ -67,7 +67,7 @@ function CartPage() {
 
   async function handleDecrease(id) {
     const item = items.find(function (x) {
-      return x.id === id || x.productId === id;
+      return getItemId(x) === id;
     });
     if (!item) return;
 
@@ -76,7 +76,7 @@ function CartPage() {
 
     try {
       await updateCartItem({
-        productId: item.productId || item.id,
+        productId: getItemId(item),
         quantity: currentQty - 1,
       });
       loadCart();
@@ -119,7 +119,7 @@ function CartPage() {
   }
 
   function getItemId(item) {
-    return item.productId || item.id;
+    return item.product || item.productId || item.id || item._id;
   }
 
   function getItemName(item) {

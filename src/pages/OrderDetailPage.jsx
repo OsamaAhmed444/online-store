@@ -90,7 +90,8 @@ const OrderDetailPage = () => {
 
   const items = order?.items || order?.products || [];
 
-  const total = order?.totalAmount ?? order?.total ?? order?.grandTotal ?? 0;
+  const total =
+    order?.totalPrice ?? order?.totalAmount ?? order?.total ?? order?.grandTotal ?? 0;
 
   const address = order?.shippingAddress || order?.address || {};
 
@@ -195,9 +196,9 @@ const OrderDetailPage = () => {
 
           <div className="space-y-3">
             {items.map((item, index) => {
-              const product = item?.product || item;
+              const product = typeof item?.product === "object" ? item.product : item;
 
-              const name = product?.name || item?.productName || "Item";
+              const name = item?.name || product?.name || item?.productName || "Item";
 
               const quantity = item?.quantity || item?.qty || 1;
 

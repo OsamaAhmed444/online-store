@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   User,
   Mail,
@@ -13,20 +14,29 @@ import {
   Building2,
   Home,
   Hash,
+  Package,
+  PackageOpen,
 } from "lucide-react";
 
 import { getMe, logout } from "../api/authApi";
 import { updateProfile } from "../api/userApi";
+import { getMyOrders } from "../api/ordersApi";
 
 import ProfileForm from "../components/profile/ProfileForm";
 import ChangePasswordForm from "../components/profile/ChangePasswordForm";
+import OrderCard from "../components/profile/OrderCard";
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [showEdit, setShowEdit] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const [orders, setOrders] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -44,7 +54,23 @@ const ProfilePage = () => {
       }
     };
 
+    const fetchOrders = async () => {
+      try {
+        const response = await getMyOrders({ limit: 3 });
+
+        const data =
+          response?.data?.data || response?.data?.orders || response?.data;
+
+        setOrders(Array.isArray(data) ? data.slice(0, 3) : []);
+      } catch (error) {
+        console.error("Failed to get orders:", error);
+      } finally {
+        setOrdersLoading(false);
+      }
+    };
+
     fetchUser();
+    fetchOrders();
   }, []);
 
   const handleUpdateProfile = async (data) => {
@@ -212,6 +238,68 @@ const ProfilePage = () => {
             <Plus size={19} />
             Add Address
           </button>
+        </section>
+
+        <section className="mb-4 rounded-2xl border border-border bg-surface/90 p-5 md:p-7">
+          <div className="flex items-center justify-between gap-3 mb-6">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center text-primary h-11 w-11 rounded-xl bg-primary/10">
+                <Package size={22} />
+              </div>
+
+              <div>
+                <h2 className="text-xl font-bold">Recent Orders</h2>
+
+                <p className="text-sm text-muted-foreground">
+                  Your most recent purchases.
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => navigate("/orders")}
+              className="text-sm font-semibold text-primary hover:underline"
+            >
+              View All
+            </button>
+          </div>
+
+          {ordersLoading && (
+            <div className="space-y-3">
+              {[1, 2].map((item) => (
+                <div
+                  key={item}
+                  className="h-24 animate-pulse rounded-xl border border-border bg-muted"
+                />
+              ))}
+            </div>
+          )}
+
+          {!ordersLoading && orders.length === 0 && (
+            <div className="rounded-xl border border-border bg-muted px-5 py-10 text-center">
+              <PackageOpen size={40} className="mx-auto text-primary" />
+
+              <p className="mt-3 text-sm text-muted-foreground">
+                You haven't placed any orders yet.
+              </p>
+            </div>
+          )}
+
+          {!ordersLoading && orders.length > 0 && (
+            <div className="space-y-3">
+              {orders.map((order) => {
+                const id = order?._id || order?.id || order?.orderId;
+
+                return (
+                  <OrderCard
+                    key={id}
+                    order={order}
+                    onClick={() => navigate(`/orders/${id}`)}
+                  />
+                );
+              })}
+            </div>
+          )}
         </section>
 
         <section className="mb-4 rounded-2xl border border-border bg-surface/90 p-5 md:p-7">

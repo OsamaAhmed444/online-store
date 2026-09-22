@@ -19,8 +19,8 @@ const PaymentMethodSelector = ({ selectedMethod, onSelectMethod }) => {
         <input
           type="radio"
           name="paymentMethod"
-          value="cod"
-          checked={selectedMethod === 'cod'}
+          value="cash"
+          checked={selectedMethod === 'cash'}
           onChange={(e) => onSelectMethod(e.target.value)}
           className="h-4 w-4 accent-primary"
         />

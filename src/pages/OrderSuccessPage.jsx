@@ -18,9 +18,24 @@ const OrderSuccessPage = () => {
 
       {order && (
         <div className="bg-surface border border-border p-4 rounded text-left mb-6 text-sm">
-          <p className="font-semibold mb-1">Order ID: <span className="font-normal text-muted-foreground">{order.id || order._id || 'N/A'}</span></p>
-          <p className="font-semibold mb-1">Total Amount: <span className="font-normal text-muted-foreground">${order.totalAmount || order.total || '0.00'}</span></p>
-          <p className="font-semibold">Payment Status: <span className="font-normal text-green-500">Paid / Confirmed</span></p>
+          <p className="font-semibold mb-1">Order ID: <span className="font-normal text-muted-foreground">{order._id || order.id || 'N/A'}</span></p>
+          <p className="font-semibold mb-1">Total Amount: <span className="font-normal text-muted-foreground">${(order.totalPrice ?? order.totalAmount ?? order.total ?? 0).toFixed ? (order.totalPrice ?? order.totalAmount ?? order.total ?? 0).toFixed(2) : (order.totalPrice ?? order.totalAmount ?? order.total ?? '0.00')}</span></p>
+          <p className="font-semibold">
+            Payment Status:{' '}
+            <span
+              className={
+                order.paymentStatus === 'paid'
+                  ? 'font-normal text-green-500'
+                  : 'font-normal text-yellow-500'
+              }
+            >
+              {order.paymentStatus === 'paid'
+                ? 'Paid'
+                : order.paymentMethod === 'cash'
+                ? 'Pending (Cash on Delivery)'
+                : 'Pending'}
+            </span>
+          </p>
         </div>
       )}
 

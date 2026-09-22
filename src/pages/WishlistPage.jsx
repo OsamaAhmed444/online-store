@@ -22,8 +22,9 @@ function WishlistPage() {
       setError("");
       const res = await getMyWishlist();
       const data = res.data;
-      const list = data.items || data.wishlist || data.data || [];
-      setItems(list);
+      const list =
+        data.wishlist?.products || data.products || data.items || data.data || [];
+      setItems(Array.isArray(list) ? list : []);
     } catch (err) {
       setError("Failed to load wishlist");
       setItems([]);
@@ -37,7 +38,7 @@ function WishlistPage() {
   }, []);
 
   function getItemId(item) {
-    return item.productId || item.id || item.product?._id;
+    return item._id || item.id || item.productId || item.product?._id;
   }
 
   function getItemName(item) {
@@ -45,11 +46,12 @@ function WishlistPage() {
   }
 
   function getItemPrice(item) {
-    return item.price || item.product?.price || 0;
+    return item.discountPrice || item.price || item.product?.price || 0;
   }
 
   function getItemImage(item) {
     return (
+      item.images?.[0]?.url ||
       item.image ||
       item.product?.image ||
       item.product?.thumbnail ||

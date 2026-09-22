@@ -5,6 +5,7 @@ const AddressForm = ({ onSubmit, initialValues = {} }) => {
     fullName: initialValues.fullName || '',
     address: initialValues.address || '',
     city: initialValues.city || '',
+    country: initialValues.country || '',
     postalCode: initialValues.postalCode || '',
     phone: initialValues.phone || '',
   });
@@ -60,16 +61,27 @@ const AddressForm = ({ onSubmit, initialValues = {} }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Postal Code</label>
+          <label className="block text-sm font-medium mb-1">Country</label>
           <input
             type="text"
-            name="postalCode"
-            value={formData.postalCode}
+            name="country"
+            value={formData.country}
             onChange={handleChange}
             required
             className="w-full border border-border bg-muted p-2 rounded text-foreground outline-none focus:border-primary"
           />
         </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-1">Postal Code</label>
+        <input
+          type="text"
+          name="postalCode"
+          value={formData.postalCode}
+          onChange={handleChange}
+          className="w-full border border-border bg-muted p-2 rounded text-foreground outline-none focus:border-primary"
+        />
       </div>
 
       <div>

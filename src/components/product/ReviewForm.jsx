@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { Star } from "lucide-react";
 import { addProductReview } from "../../api/productsApi";
 
-const ReviewForm = ({ productId }) => {
+const ReviewForm = ({ productId, onReviewAdded }) => {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
 
@@ -38,6 +39,7 @@ const ReviewForm = ({ productId }) => {
 
       setSuccess("Your review was submitted successfully!");
       toast.success("Review submitted successfully!");
+      onReviewAdded?.();
     } catch (err) {
       console.error("Review submission failed:", err);
 
@@ -69,15 +71,16 @@ const ReviewForm = ({ productId }) => {
               key={star}
               type="button"
               onClick={() => setRating(star)}
-              className="text-2xl transition-transform hover:scale-110"
+              className="transition-transform hover:scale-110"
               aria-label={`Rate ${star} out of 5`}
             >
-              <i
-                className={`fa-star ${
+              <Star
+                size={28}
+                className={
                   star <= rating
-                    ? "fa-solid text-yellow-400"
-                    : "fa-regular text-muted-foreground"
-                }`}
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "fill-transparent text-muted-foreground"
+                }
               />
             </button>
           ))}

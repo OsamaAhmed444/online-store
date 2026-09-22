@@ -32,10 +32,10 @@ const features = [
 ];
 
 const categories = [
-  { name: "Electronics", query: "Electronics" },
-  { name: "Fashion", query: "Fashion" },
-  { name: "Home & Living", query: "Home" },
-  { name: "Sports", query: "Sports" },
+  { name: "Electronics", query: "electronics" },
+  { name: "Fashion", query: "fashion" },
+  { name: "Home & Living", query: "home" },
+  { name: "Sports", query: "sports" },
 ];
 
 const HomePage = () => {

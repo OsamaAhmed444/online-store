@@ -1,10 +1,56 @@
 import React, { useEffect, useState } from "react";
-import { getProductReviews } from "../../api/productsApi";
+import { Star, Pencil, Trash2, X, Check } from "lucide-react";
+import {
+  getProductReviews,
+  addProductReview,
+  deleteProductReview,
+} from "../../api/productsApi";
+import useAuth from "../../hooks/useAuth";
 
-const ReviewList = ({ productId }) => {
+const getReviewId = (review) => review.id || review._id;
+
+const getReviewUserId = (review) =>
+  (typeof review.user === "string" ? review.user : null) ||
+  review.user?._id ||
+  review.user?.id ||
+  review.userId ||
+  review.user_id ||
+  null;
+
+const StarPicker = ({ value, onChange }) => (
+  <div className="flex items-center gap-1">
+    {[1, 2, 3, 4, 5].map((star) => (
+      <button
+        key={star}
+        type="button"
+        onClick={() => onChange(star)}
+        className="transition-transform hover:scale-110"
+        aria-label={`Rate ${star} out of 5`}
+      >
+        <Star
+          size={18}
+          className={
+            star <= value
+              ? "fill-yellow-400 text-yellow-400"
+              : "fill-transparent text-muted-foreground"
+          }
+        />
+      </button>
+    ))}
+  </div>
+);
+
+const ReviewList = ({ productId, refreshKey }) => {
+  const { user } = useAuth();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [editingId, setEditingId] = useState(null);
+  const [editRating, setEditRating] = useState(5);
+  const [editComment, setEditComment] = useState("");
+  const [savingId, setSavingId] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   const fetchReviews = async () => {
     try {
@@ -36,7 +82,62 @@ const ReviewList = ({ productId }) => {
     if (productId) {
       fetchReviews();
     }
-  }, [productId]);
+  }, [productId, refreshKey]);
+
+  const startEditing = (review) => {
+    setEditingId(getReviewId(review));
+    setEditRating(Number(review.rating || 0));
+    setEditComment(review.comment || review.content || review.text || "");
+  };
+
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditRating(5);
+    setEditComment("");
+  };
+
+  const saveEditing = async (reviewId) => {
+    if (!editComment.trim()) return;
+
+    try {
+      setSavingId(reviewId);
+
+      // The API has no update-review endpoint (only one review per user is
+      // allowed), so "editing" replaces the old review with a new one.
+      await deleteProductReview(productId, reviewId);
+      await addProductReview(productId, {
+        rating: editRating,
+        comment: editComment.trim(),
+      });
+
+      cancelEditing();
+      await fetchReviews();
+    } catch (err) {
+      console.error("Review update failed:", err);
+      alert(
+        err?.response?.data?.message || "Failed to update review. Please try again."
+      );
+    } finally {
+      setSavingId(null);
+    }
+  };
+
+  const handleDelete = async (reviewId) => {
+    if (!window.confirm("Delete this review?")) return;
+
+    try {
+      setDeletingId(reviewId);
+      await deleteProductReview(productId, reviewId);
+      setReviews((prev) => prev.filter((r) => getReviewId(r) !== reviewId));
+    } catch (err) {
+      console.error("Review deletion failed:", err);
+      alert(
+        err?.response?.data?.message || "Failed to delete review. Please try again."
+      );
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   if (loading) {
     return (
@@ -85,7 +186,10 @@ const ReviewList = ({ productId }) => {
   return (
     <div className="space-y-4">
       {reviews.map((review) => {
+        const reviewId = getReviewId(review);
         const rating = Number(review.rating || 0);
+        const isOwner = !!user && getReviewUserId(review) === (user._id || user.id);
+        const isEditing = editingId === reviewId;
 
         const reviewerName =
           review.user?.name ||
@@ -96,7 +200,7 @@ const ReviewList = ({ productId }) => {
 
         return (
           <article
-            key={review.id}
+            key={reviewId}
             className="rounded-xl border border-border p-5"
           >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -112,24 +216,86 @@ const ReviewList = ({ productId }) => {
                 )}
               </div>
 
-              <div className="flex items-center gap-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <i
-                    key={star}
-                    className={`fa-star text-sm ${
-                      star <= rating
-                        ? "fa-solid text-yellow-400"
-                        : "fa-regular text-muted-foreground"
-                    }`}
-                  />
-                ))}
+              <div className="flex items-center gap-3">
+                {isEditing ? (
+                  <StarPicker value={editRating} onChange={setEditRating} />
+                ) : (
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        size={16}
+                        className={
+                          star <= rating
+                            ? "fill-yellow-400 text-yellow-400"
+                            : "fill-transparent text-muted-foreground"
+                        }
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {isOwner && !isEditing && (
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => startEditing(review)}
+                      className="text-muted-foreground transition hover:text-foreground"
+                      aria-label="Edit review"
+                    >
+                      <Pencil size={16} />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(reviewId)}
+                      disabled={deletingId === reviewId}
+                      className="text-muted-foreground transition hover:text-red-500 disabled:opacity-50"
+                      aria-label="Delete review"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                )}
+
+                {isEditing && (
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => saveEditing(reviewId)}
+                      disabled={savingId === reviewId}
+                      className="text-muted-foreground transition hover:text-green-600 disabled:opacity-50"
+                      aria-label="Save review"
+                    >
+                      <Check size={16} />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={cancelEditing}
+                      className="text-muted-foreground transition hover:text-foreground"
+                      aria-label="Cancel editing"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
-            {(review.comment || review.content || review.text) && (
-              <p className="mt-4 leading-6 text-muted-foreground">
-                {review.comment || review.content || review.text}
-              </p>
+            {isEditing ? (
+              <textarea
+                value={editComment}
+                onChange={(event) => setEditComment(event.target.value)}
+                rows={3}
+                className="mt-4 w-full resize-none rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition focus:border-foreground"
+              />
+            ) : (
+              (review.comment || review.content || review.text) && (
+                <p className="mt-4 leading-6 text-muted-foreground">
+                  {review.comment || review.content || review.text}
+                </p>
+              )
             )}
           </article>
         );
@@ -139,4 +305,3 @@ const ReviewList = ({ productId }) => {
 };
 
 export default ReviewList;
-
