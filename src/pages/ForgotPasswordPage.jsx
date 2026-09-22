@@ -1,8 +1,10 @@
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth';
 //////////////////
 export default function ForgotPasswordPage() {
+  const navigate = useNavigate();
   const { forgotPassword } = useAuth();
   const {
     register,
@@ -13,7 +15,8 @@ export default function ForgotPasswordPage() {
   const onSubmit = async (data) => {
     try {
       await forgotPassword(data.email);
-      toast.success('Reset link sent to your email');
+      toast.success('A verification code has been sent to your email');
+      navigate('/reset-password');
     } catch (error) {
       toast.error(error?.response?.data?.message || 'e-mail is wrong');
     }
@@ -26,7 +29,7 @@ export default function ForgotPasswordPage() {
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold text-primary">Forgot Password</h1>
           <p className="text-xs text-muted-foreground mt-2">
-           Enter your email address to receive a link to reset your password.
+           Enter your email address to receive a verification code to reset your password.
           </p>
         </div>
 

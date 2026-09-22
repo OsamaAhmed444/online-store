@@ -102,10 +102,10 @@ export default function AuthContext({ children }) {
   };
 
 
-    const verifyPasswordOtp = async ({ email,otp }) => {
+    const verifyPasswordOtp = async ({ email, otp, newPassword }) => {
     setLoading(true);
     try {
-      const response = await verifyForgotPasswordOtp({ email ,otp});
+      const response = await verifyForgotPasswordOtp({ email, otp, newPassword });
       return response.data;
     } catch (error) {
       throw error;
